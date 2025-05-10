@@ -1,5 +1,11 @@
 package org.example.daos;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.example.exceptions.DaoException;
 import org.example.models.User;
 import org.springframework.dao.DataAccessException;
@@ -7,11 +13,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Data access object for users.
@@ -69,11 +70,17 @@ public class UserDao {
      */
     public User createUser(User user) {
         String hashedPassword = passwordEncoder.encode(user.getPassword());
-        String sql = "INSERT INTO users (username, password) VALUES (?,?);";
+        String sql = "INSERT INTO users (username, password) VALUES (?, ?);";
         try {
             jdbcTemplate.update(sql, user.getUsername(), hashedPassword);
+
+            // Set default role USER unless already set
+            String role = (user.getRole() != null && !user.getRole().isBlank()) ? user.getRole() : "USER";
+            jdbcTemplate.update("INSERT INTO roles (username, role) VALUES (?, ?);", user.getUsername(), role);
+
+            user.setRole(role); // Set role for returning object
             return getUserByUsername(user.getUsername());
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataAccessException e) {
             throw new DaoException("Failed to create user.");
         }
     }
@@ -130,6 +137,9 @@ public class UserDao {
         }
         return getRoles(username);
     }
+    public boolean passwordMatches(String rawPassword, String encodedPassword) {
+         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 
     /**
      * Deletes a role from a user.
@@ -152,9 +162,16 @@ public class UserDao {
      */
     private User mapToUser(ResultSet resultSet, int rowNumber) throws SQLException {
         String username = resultSet.getString("username");
-        return new User(
-                username,
-                resultSet.getString("password")
-        );
+        String password = resultSet.getString("password");
+
+        // Fetch role
+        String role = null;
+        try {
+            role = jdbcTemplate.queryForObject("SELECT role FROM roles WHERE username = ? LIMIT 1", String.class, username);
+        } catch (EmptyResultDataAccessException ignored) {}
+
+        User user = new User(username, password);
+        user.setRole(role);
+        return user;
     }
 }

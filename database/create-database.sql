@@ -16,8 +16,31 @@ create table roles (
 );
 
 
-insert into users (username, password) values ('admin', '$2a$10$rdrt3j7YkAaVTQJcGnPX.ORrpMZ3ZXUMZqhfx0jR68vLaqB2jvsH2');
+insert into users (username, password) values ('admin', '$2a$10$tBTfzHzjmQVKza3VSa5lsOX6/iL93xPVLlLXYg2FhT6a.jb1o6VDq');
 insert into roles (username, role) values ('admin', 'ADMIN');
 
-insert into users (username, password) values ('user', '$2a$10$rdrt3j7YkAaVTQJcGnPX.ORrpMZ3ZXUMZqhfx0jR68vLaqB2jvsH2');
+insert into users (username, password) values ('user', '$2a$10$eXAMPLEdhashEDstring1xxxtest3456yyy');
 insert into roles (username, role) values ('user', 'USER');
+
+@Entity
+@Table(name = "recipes")
+public class Recipe {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private String name;
+    
+    @Column(columnDefinition = "TEXT")
+    private String ingredients;
+
+    @Column(columnDefinition = "TEXT")
+    private String instructions;
+
+    private Integer cookingTime;
+    private Boolean isPublic;
+    private Timestamp createdAt;

@@ -1,24 +1,25 @@
 package org.example.controllers;
 
+import java.security.Principal;
+import java.util.List;
+
 import org.example.daos.UserDao;
 import org.example.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.List;
-
-/**
- * Controller for the profile of the currently logged in user.
- */
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/profile")
 @PreAuthorize("isAuthenticated()")
 public class ProfileController {
-    /**
-     * The user data access object.
-     */
+
     @Autowired
     private UserDao userDao;
 
