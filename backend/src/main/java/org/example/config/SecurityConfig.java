@@ -31,18 +31,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(Customizer.withDefaults()) // Enable CORS
-            .csrf(csrf -> csrf.disable()) // Disable CSRF
+            .cors(Customizer.withDefaults())
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // CORS preflight
-                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll() // Allow login endpoint without auth
-                .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Allow user creation endpoint without auth
-                .anyRequest().authenticated() // All other requests need authentication
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/mealplans/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/mealplans/ping").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/recipes/**").permitAll()
+                .anyRequest().permitAll()
             )
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Stateless session management
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter before username password filter
-
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -66,7 +68,7 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        
+
         return source;
     }
 }

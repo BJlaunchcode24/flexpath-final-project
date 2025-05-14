@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../utils/axiosInstance"; // ✅ uses interceptor for JWT token
+import axios from "../utils/axiosInstance";
 
 const Recipes = () => {
   const [recipes, setRecipes] = useState([]);

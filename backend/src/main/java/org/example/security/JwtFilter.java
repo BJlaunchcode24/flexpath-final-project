@@ -2,8 +2,10 @@ package org.example.security;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -25,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        if (request == null) return true; // safety check
+        if (request == null) return true;
         String path = request.getServletPath();
         return path.equals("/api/auth/login") || path.equals("/api/users");
     }
@@ -44,7 +46,13 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 if (jwtUtil.validateToken(token)) {
                     String username = jwtUtil.extractUsername(token);
-                    var auth = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+                    String role = jwtUtil.extractRole(token); 
+                    List<SimpleGrantedAuthority> authorities = Collections.emptyList();
+                    if (role != null) {
+                        authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+                    }
+
+                    var auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
                     auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }

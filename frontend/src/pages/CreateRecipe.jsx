@@ -1,63 +1,68 @@
-import React, { useState, useEffect } from "react";
-import axios from "../utils/axiosInstance"; // axios instance with JWT interceptor
+import React, { useState } from "react";
+import axios from "../utils/axiosInstance";
 
 const CreateRecipe = () => {
-  const user = JSON.parse(localStorage.getItem("user")); // get logged in user
-
   const [recipe, setRecipe] = useState({
     name: "",
     ingredients: "",
     instructions: "",
-    cookingTime: "",
+    cookingTime: 1,
     isPublic: false,
-    userId: user?.username || "", // backend expects username
   });
-
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.id;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setRecipe({
-      ...recipe,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    setRecipe((prev) => ({
+      ...prev,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : name === "cookingTime"
+          ? Number(value)
+          : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccess(false);
+    setError(null);
+    const payload = { ...recipe, userId };
+    console.log("Submitting recipe payload:", payload);
     try {
-      await axios.post("/recipes", recipe); // token auto-included via interceptor
+      await axios.post("/recipes", payload, {
+        headers: { "Content-Type": "application/json" },
+      });
       setSuccess(true);
       setRecipe({
         name: "",
         ingredients: "",
         instructions: "",
-        cookingTime: "",
+        cookingTime: 1,
         isPublic: false,
-        userId: user?.username || "",
       });
     } catch (err) {
-      console.error("Error creating recipe:", err);
-      setSuccess(false);
+      setError(err.response?.data?.message || "Failed to create recipe.");
+      console.error("Recipe creation error:", err.response?.data || err.message || err);
     }
   };
-
-  useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => setSuccess(false), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [success]);
 
   return (
     <div className="container mt-4">
       <h2>Create New Recipe</h2>
       {success && <div className="alert alert-success">Recipe created successfully!</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Recipe Name</label>
+          <label className="form-label" htmlFor="recipe-name">Recipe Name</label>
           <input
+            id="recipe-name"
             type="text"
             name="name"
             className="form-control"
@@ -68,8 +73,9 @@ const CreateRecipe = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Ingredients (comma-separated)</label>
+          <label className="form-label" htmlFor="ingredients">Ingredients (comma-separated)</label>
           <textarea
+            id="ingredients"
             name="ingredients"
             className="form-control"
             value={recipe.ingredients}
@@ -79,8 +85,9 @@ const CreateRecipe = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Instructions</label>
+          <label className="form-label" htmlFor="instructions">Instructions</label>
           <textarea
+            id="instructions"
             name="instructions"
             className="form-control"
             value={recipe.instructions}
@@ -90,8 +97,9 @@ const CreateRecipe = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Cooking Time (minutes)</label>
+          <label className="form-label" htmlFor="cookingTime">Cooking Time (minutes)</label>
           <input
+            id="cookingTime"
             type="number"
             name="cookingTime"
             className="form-control"

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Navbar from '../components/Navbar'; // adjust the path if needed
-
+import Navbar from '../components/Navbar'; 
 const Layout = () => {
   return (
     <>

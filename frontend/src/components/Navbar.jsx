@@ -18,11 +18,10 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-      <Link className="navbar-brand" to="/">Meal Planner</Link>
+      <Link className="navbar-brand" to="/">Recipe App</Link>
       <div className="collapse navbar-collapse">
         <ul className="navbar-nav me-auto">
-          <li className="nav-item"><Link className="nav-link" to="/recipes">Recipes</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/mealplans">Meal Plans</Link></li>
+    
         </ul>
         <ul className="navbar-nav">
           {token ? (

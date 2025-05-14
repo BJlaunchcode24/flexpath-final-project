@@ -25,6 +25,10 @@ public class RecipeController {
 
     @Autowired
     private RecipeRepository recipeRepository;
+    
+    public RecipeController(RecipeRepository recipeRepository) {
+    this.recipeRepository = recipeRepository;
+}
 
     @PostMapping
     public ResponseEntity<Recipe> createRecipe(@Valid @RequestBody Recipe recipe) {

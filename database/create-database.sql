@@ -1,46 +1,34 @@
-create database if not exists flexpath_final;
-use flexpath_final;
+-- Create database and use it
+CREATE DATABASE IF NOT EXISTS flexpath_final;
+USE flexpath_final;
 
-drop table if exists users, roles;
+-- Drop tables if they exist
+DROP TABLE IF EXISTS recipes;
+DROP TABLE IF EXISTS users;
 
-create table users (
-    username varchar(255) primary key,
-    password varchar(255)
+-- Users table
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'USER'
 );
 
-create table roles (
-    username varchar(255) not null,
-    role varchar(250) not null,
-    primary key (username, role),
-    foreign key (username) references users(username) on delete cascade
+-- Recipes table
+CREATE TABLE recipes (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    ingredients TEXT,
+    instructions TEXT,
+    cooking_time INT,
+    is_public BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
-
-insert into users (username, password) values ('admin', '$2a$10$tBTfzHzjmQVKza3VSa5lsOX6/iL93xPVLlLXYg2FhT6a.jb1o6VDq');
-insert into roles (username, role) values ('admin', 'ADMIN');
-
-insert into users (username, password) values ('user', '$2a$10$eXAMPLEdhashEDstring1xxxtest3456yyy');
-insert into roles (username, role) values ('user', 'USER');
-
-@Entity
-@Table(name = "recipes")
-public class Recipe {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    private String name;
-    
-    @Column(columnDefinition = "TEXT")
-    private String ingredients;
-
-    @Column(columnDefinition = "TEXT")
-    private String instructions;
-
-    private Integer cookingTime;
-    private Boolean isPublic;
-    private Timestamp createdAt;
+-- Seed users
+INSERT INTO users (username, password, role) VALUES
+('admin', '$2a$10$tBTfzHzjmQVKza3VSa5lsOX6/iL93xPVLlLXYg2FhT6a.jb1o6VDq', 'ADMIN'),
+('user', '$2a$10$eXAMPLEdhashEDstring1xxxtest3456yyy', 'USER');

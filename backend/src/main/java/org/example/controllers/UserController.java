@@ -23,6 +23,11 @@ public class UserController {
 
     @Autowired
     private UserDao userDao;
+    public UserController() {}
+
+    public UserController(UserDao userDao) {
+    this.userDao = userDao;
+}
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -43,6 +48,4 @@ public class UserController {
 
         return userDao.createUser(user);
     }
-
-    // Add more as needed...
 }

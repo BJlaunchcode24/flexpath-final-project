@@ -3,15 +3,32 @@ import { Navigate, useLocation } from "react-router-dom";
 
 const PrivateRoute = ({ children, requiredRole }) => {
   const token = localStorage.getItem("token");
+  const location = useLocation();
 
   if (!token) {
-    return <Navigate to="/login" state={{ message: "Please log in to continue" }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (requiredRole) {
-    const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT
-    if (payload.role !== requiredRole) {
-      return <Navigate to="/" state={{ message: "Unauthorized" }} replace />;
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      if (
+        payload.role !== requiredRole &&
+        !(requiredRole === "USER" && payload.role === "ADMIN")
+      ) {
+        return (
+          <Navigate
+            to="/login"
+            state={{
+              from: location,
+              message: "Only admin can login to create a recipe.",
+            }}
+            replace
+          />
+        );
+      }
+    } catch {
+      return <Navigate to="/login" state={{ from: location }} replace />;
     }
   }
 

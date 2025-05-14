@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "/api", // Use relative path for easier deployment and proxy support
 });
 
 // Add token to every request if available

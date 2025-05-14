@@ -15,21 +15,24 @@ const Register = () => {
     e.preventDefault();
     setError(null);
     try {
-      // Register the user
-      await axios.post("http://localhost:8080/api/users", form, {
+      // Use relative URLs so axiosInstance baseURL works
+      await axios.post("/users", form, {
+        headers: { "Content-Type": "application/json" },
+      });
+      const res = await axios.post("/auth/login", form, {
         headers: { "Content-Type": "application/json" },
       });
 
-      // Then log them in
-      const res = await axios.post("http://localhost:8080/api/auth/login", form, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      // ✅ Store token and user info
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify({ username: res.data.username }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: res.data.id,
+          username: res.data.username,
+          role: res.data.role,
+        })
+      );
 
-      // Redirect to Recipes page
       navigate("/recipes");
     } catch (err) {
       console.error("Registration/Login failed:", err.response?.data || err.message);
@@ -38,37 +41,61 @@ const Register = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Register</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Username</label>
-          <input
-            type="text"
-            className="form-control"
-            name="username"
-            value={form.username}
-            onChange={handleChange}
-            required
+    <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+      <div className="card shadow p-4" style={{ maxWidth: "400px", width: "100%" }}>
+        <div className="text-center mb-4">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png"
+            alt="Register"
+            width={72}
+            height={72}
+            className="mb-3"
           />
+          <h2 className="mb-2">Register</h2>
+          <p className="text-muted">Create your account</p>
         </div>
+        {error && <div className="alert alert-danger">{error}</div>}
 
-        <div className="mb-3">
-          <label className="form-label">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label fw-semibold" htmlFor="username">Username</label>
+            <input
+              type="text"
+              className="form-control"
+              id="username"
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+              required
+              autoFocus
+              placeholder="Choose a username"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label fw-semibold" htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              placeholder="Create a password"
+            />
+          </div>
+
+          <button type="submit" className="btn btn-success w-100 fw-bold">
+            Register &amp; Login
+          </button>
+        </form>
+        <div className="mt-3 text-center">
+          <small className="text-muted">
+            Already have an account? <a href="/login">Login</a>
+          </small>
         </div>
-
-        <button type="submit" className="btn btn-primary">Register & Login</button>
-      </form>
+      </div>
     </div>
   );
 };

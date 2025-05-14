@@ -23,37 +23,24 @@ public class ProfileController {
     @Autowired
     private UserDao userDao;
 
-    /**
-     * Gets the profile of the currently logged in user.
-     *
-     * @param principal The currently logged in user.
-     * @return The profile of the currently logged in user.
-     */
+    public ProfileController() {}
+
+    public ProfileController(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
     @GetMapping
     public User getProfile(Principal principal) {
         String username = principal.getName();
         return userDao.getUserByUsername(username);
     }
 
-    /**
-     * Gets the roles of the currently logged in user.
-     *
-     * @param principal The currently logged in user.
-     * @return The roles of the currently logged in user.
-     */
     @GetMapping("/roles")
     public List<String> getRoles(Principal principal) {
         String username = principal.getName();
         return userDao.getRoles(username);
     }
 
-    /**
-     * Changes the password of the currently logged in user.
-     *
-     * @param principal   The currently logged in user.
-     * @param newPassword The new password.
-     * @return The updated user.
-     */
     @PutMapping("/change-password")
     public User changePassword(Principal principal, @RequestBody String newPassword) {
         String username = principal.getName();
