@@ -28,7 +28,9 @@ CREATE TABLE recipes (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- Seed users
-INSERT INTO users (username, password, role) VALUES
-('admin', '$2a$10$tBTfzHzjmQVKza3VSa5lsOX6/iL93xPVLlLXYg2FhT6a.jb1o6VDq', 'ADMIN'),
-('user', '$2a$10$eXAMPLEdhashEDstring1xxxtest3456yyy', 'USER');
+-- Seed users (with role)
+
+
+insert into users (username, password, role) values ('admin', '$2a$10$tBTfzHzjmQVKza3VSa5lsOX6/iL93xPVLlLXYg2FhT6a.jb1o6VDq', 'ADMIN');
+insert into users (username, password, role) values ('user', '$2a$10$tBTfzHzjmQVKza3VSa5lsOX6/iL93xPVLlLXYg2FhT6a.jb1o6VDq', 'USER');
+
