@@ -27,35 +27,37 @@ Administrators can create, search, delete recipes, and manage users.
 
 ## URLs Summary
 
-- **Backend API:** [http://localhost:8080](http://localhost:8080)
-- **Frontend:** [http://localhost:5173](http://localhost:5173)
+- **Backend API:** (http://localhost:8080)
+- **Frontend:** (http://localhost:5173)
 
 ---
 
 ## Quick Start
 
-### 1. Clone the Repository
+
+
+1. Clone the Repository
 
 ```sh
-git clone https://github.com/BJlaunchcode24/flexpath-final-project.git
-cd flexpath-final-project
+- git clone https://github.com/BJlaunchcode24/flexpath-final-project.git
+- cd flexpath-final-project
 
 
 2. Database Setup
-Make sure MySQL is running.
+- Make sure MySQL is running.
 
-Run the provided SQL script to create all tables and seed data:
+- Run the provided SQL script to create all tables and seed data:
 
-mysql -u <youruser> -p < database/create-database.sql
+- mysql -u <youruser> -p < database/create-database.sql
 
-(Replace <youruser> with your MySQL username, for example, root.)
+     (Replace <youruser> with your MySQL username, for example, root.)
 
 This will create the mealplanner database, all tables, relationships, and insert default users and recipes.
 
 
 3. Backend Setup
-Edit application.properties and set your MySQL username and password.
-Make sure the database name matches your MySQL database (mealplanner)
+- Edit application.properties and set your MySQL username and password.
+- Make sure the database name matches your MySQL database (mealplanner)
 
 spring.datasource.url=jdbc:mysql://localhost:3306/mealplanner
 spring.datasource.username=YOUR_DB_USER
@@ -65,63 +67,71 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 jwt.secret=YOUR_SECRET_KEY66
 
-Replace YOUR_DB_USER, YOUR_DB_PASSWORD, and YOUR_SECRET_KEY with your own values.
+- Replace YOUR_DB_USER, YOUR_DB_PASSWORD, and YOUR_SECRET_KEY with your own values.
 
-Start the backend server:
-
+- Start the backend server:
 cd backend
 ./mvnw spring-boot:run
 
 (On Windows, use mvnw spring-boot:run)
 
-The backend server will be available at:
+- The backend server will be available at:
 http://localhost:8080
 
 4. Frontend Setup
-Start the frontend:
 
+- Start the frontend:
 cd frontend
 npm install
 npm run dev
 
-Open http://localhost:5173 in your browser.
+- Open http://localhost:5173 in your browser.
 
 
 
 Default Users
-The SQL script creates these users:
+
+- The SQL script creates these users:
 
 Username	Password (bcrypt hash)	Role
 admin	          (see SQL file)	ADMIN
 user	           (see SQL file)	USER
+
 Note: Passwords are stored as bcrypt hashes. You may want to update them to known values for testing, or use your backend to register new users.
 
+
 Features
-User Registration & Login (with roles: USER, ADMIN)
-View Public Recipes
-Admin can Create, Search, Delete Recipes (public/private)
-Admin can manage all users
-SQL file includes all table creation, relationships, and seed data
+
+- User Registration & Login (with roles: USER, ADMIN)
+- View Public Recipes
+- Admin can Create, Search, Delete Recipes (public/private)
+- Admin can manage all users
+- SQL file includes all table creation, relationships, and seed data
 
 
 Testing
-Backend: Run ./mvnw test in backend
-Frontend: Run npm test in frontend (if tests are implemented)
+
+- Backend: Run ./mvnw test in backend
+- Frontend: Run npm test in frontend (if tests are implemented)
 
 
 Troubleshooting
-Ensure MySQL is running and credentials are correct.
-If you get a database error, check that you ran the SQL script and are using the correct database name.
-Check backend logs for errors if the API does not respond.
+
+- Ensure MySQL is running and credentials are correct.
+- If you get a database error, check that you ran the SQL script and are using the correct database name.
+- Check backend logs for errors if the API does not respond.
 
 
 SQL Code
-All SQL code to create the initial models, table relationships, and seed data is in create-database.sql.
+
+- ll SQL code to create the initial models, table relationships, and seed data is in create-database.sql.
 
 
 License
-MIT
+
+- MIT
 
 Contact
-For questions, please contact the project maintainer.
+
+- For questions, please contact the project maintainer.
 
