@@ -36,9 +36,8 @@ Administrators can create, search, delete recipes, and manage users.
 
 
 
-1. Clone the Repository
 
-```sh
+1. Clone the Repository
 - git clone https://github.com/BJlaunchcode24/flexpath-final-project.git
 - cd flexpath-final-project
 
