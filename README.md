@@ -3,8 +3,8 @@
 ## Project Overview
 
 This is a full-stack application built with **Spring Boot (Java)**, **React**, and **MySQL**.  
-Users can register, log in, view,search and manage recipes for public or private consumption.  
-Administrators can create, search, delete recepies and manage users.
+Users can register, log in, view, search, and manage recipes for public or private consumption.  
+Administrators can create, search, delete recipes, and manage users.
 
 ---
 
@@ -30,98 +30,98 @@ Administrators can create, search, delete recepies and manage users.
 - **Backend API:** [http://localhost:8080](http://localhost:8080)
 - **Frontend:** [http://localhost:5173](http://localhost:5173)
 
-
+---
 
 ## Quick Start
 
 ### 1. Clone the Repository
 
 ```sh
-git clone https://github.com/BJlaunchcode24
-cd your-repo
+git clone https://github.com/BJlaunchcode24/flexpath-final-project.git
+cd flexpath-final-project
 
 
 2. Database Setup
+Make sure MySQL is running.
 
-•	Make sure MySQL is running.
-•	Run the provided SQL script to create all tables and seed data:
+Run the provided SQL script to create all tables and seed data:
 
 mysql -u <youruser> -p < database/create-database.sql
 
-•	This will create the flexpath_final database, all tables, relationships, and insert default users and recipes.
+(Replace <youruser> with your MySQL username, for example, root.)
 
+This will create the mealplanner database, all tables, relationships, and insert default users and recipes.
 
 
 3. Backend Setup
+Edit application.properties and set your MySQL username and password.
+Make sure the database name matches your MySQL database (mealplanner)
 
-•	Edit backend/src/main/resources/application.properties and set your MySQL username and password:
-
-spring.datasource.url=jdbc:mysql://localhost:3306/flexpath_final
+spring.datasource.url=jdbc:mysql://localhost:3306/mealplanner
 spring.datasource.username=YOUR_DB_USER
 spring.datasource.password=YOUR_DB_PASSWORD
-spring.jpa.hibernate.ddl-auto=none
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+jwt.secret=YOUR_SECRET_KEY66
 
-• Start the backend:
+Replace YOUR_DB_USER, YOUR_DB_PASSWORD, and YOUR_SECRET_KEY with your own values.
+
+Start the backend server:
 
 cd backend
 ./mvnw spring-boot:run
 
-The backend server will be available at:  
+(On Windows, use mvnw spring-boot:run)
+
+The backend server will be available at:
 http://localhost:8080
 
-	(On Windows, use mvnw spring-boot:run)
-
-
-
 4. Frontend Setup
+Start the frontend:
 
-•	Start the frontend:
 cd frontend
 npm install
 npm run dev
 
-•	Open http://localhost:5173 in your browser.
+Open http://localhost:5173 in your browser.
 
 
- 
-5. Default Users
 
+Default Users
 The SQL script creates these users:
-Username	    Password (bcrypt hash)	        Role
-admin	           (see SQL file)	              ADMIN
-user	           (see SQL file)	              USER
 
-
+Username	Password (bcrypt hash)	Role
+admin	          (see SQL file)	ADMIN
+user	           (see SQL file)	USER
 Note: Passwords are stored as bcrypt hashes. You may want to update them to known values for testing, or use your backend to register new users.
 
-
 Features
+User Registration & Login (with roles: USER, ADMIN)
+View Public Recipes
+Admin can Create, Search, Delete Recipes (public/private)
+Admin can manage all users
+SQL file includes all table creation, relationships, and seed data
 
-•	User Registration & Login (with roles: USER, ADMIN)
-•	View Public Recipes
-•	Admin can Create, Search, Delete Recipes (public/private)
-•	Admin can manage all users
-•	SQL file includes all table creation, relationships, and seed data
-________________________________________
 
 Testing
-•	Backend: Run ./mvnw test in /backend
-•	Frontend: Run npm test in /frontend
-________________________________________
+Backend: Run ./mvnw test in backend
+Frontend: Run npm test in frontend (if tests are implemented)
+
 
 Troubleshooting
-•	Ensure MySQL is running and credentials are correct.
-•	If you get a database error, check that you ran the SQL script and are using the correct database name.
-•	Check backend logs for errors if the API does not respond.
-________________________________________
+Ensure MySQL is running and credentials are correct.
+If you get a database error, check that you ran the SQL script and are using the correct database name.
+Check backend logs for errors if the API does not respond.
+
 
 SQL Code
-All SQL code to create the initial models, table relationships, and seed data is in database/create-database.sql.
-________________________________________
+All SQL code to create the initial models, table relationships, and seed data is in create-database.sql.
+
 
 License
 MIT
-________________________________________
 
 Contact
-For questions, please open an issue or contact the project maintainer.
+For questions, please contact the project maintainer.
+
