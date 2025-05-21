@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-This is a full-stack application built with **Spring Boot (Java)**, **React**, and **MySQL**.  
-Users can register, log in, view, search, and manage recipes for public or private consumption.  
-Administrators can create, search, delete recipes, and manage users.
+This is a full-stack Recipe web application built with **Spring Boot (Java)**, **React**, and **MySQL**.  
+Users can register, log in, view, search, and delete recipes.  
+Administrators can create, search and delete recipes.
 
 ---
 
@@ -55,24 +55,13 @@ This will create the mealplanner database, all tables, relationships, and insert
 
 
 3. Backend Setup
-- Edit application.properties and set your MySQL username and password.
-- Make sure the database name matches your MySQL database (mealplanner)
-
-spring.datasource.url=jdbc:mysql://localhost:3306/mealplanner
-spring.datasource.username=YOUR_DB_USER
-spring.datasource.password=YOUR_DB_PASSWORD
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
-jwt.secret=YOUR_SECRET_KEY66
-
+- Edit application.properties and set your MySQL username and password
 - Replace YOUR_DB_USER, YOUR_DB_PASSWORD, and YOUR_SECRET_KEY with your own values.
 
 - Start the backend server:
 cd backend
-./mvnw spring-boot:run
+./mvn spring-boot:run
 
-(On Windows, use mvnw spring-boot:run)
 
 - The backend server will be available at:
 http://localhost:8080
@@ -81,7 +70,6 @@ http://localhost:8080
 
 - Start the frontend:
 cd frontend
-npm install
 npm run dev
 
 - Open http://localhost:5173 in your browser.
@@ -104,14 +92,10 @@ Features
 - User Registration & Login (with roles: USER, ADMIN)
 - View Public Recipes
 - Admin can Create, Search, Delete Recipes (public/private)
-- Admin can manage all users
+- Admin can manage all Recipes
 - SQL file includes all table creation, relationships, and seed data
 
 
-Testing
-
-- Backend: Run ./mvnw test in backend
-- Frontend: Run npm test in frontend (if tests are implemented)
 
 
 Troubleshooting
@@ -120,10 +104,6 @@ Troubleshooting
 - If you get a database error, check that you ran the SQL script and are using the correct database name.
 - Check backend logs for errors if the API does not respond.
 
-
-SQL Code
-
-- ll SQL code to create the initial models, table relationships, and seed data is in create-database.sql.
 
 
 License
